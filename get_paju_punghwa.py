@@ -11,37 +11,48 @@ import datetime
 import sys
 from ast import literal_eval
 
-
-#day1 = "20201024"
-
 ##날짜 입력으로 seq 값 확인\\\
 d = {}
-with open("/root/script/get_paju_punghwa.in") as f:
-    for line in f:
-        (key, val) = line.split('=')
-        d[str(key)] = val
 
+try:
+    with open("/root/script/get_paju_punghwa.in") as f:
+        for line in f:
+            (key, val) = line.split('=')
+            d[str(key)] = val
 
-day1 = d.get('YYYY').rstrip('\r\n')+d.get('MM').rstrip('\r\n')+d.get('DD').rstrip('\r\n')
-#print(day1)
+    day1 = d.get('YYYY').rstrip('\r\n')+d.get('MM').rstrip('\r\n')+d.get('DD').rstrip('\r\n')
 
-##날짜 조건절 체크 (오늘 보다 작으면 에러)
+    ##날짜 조건절 체크 (오늘 보다 작으면 에러)
+    
+    YYYY = d.get('YYYY').rstrip('\r\n')
+    MM = d.get('MM').rstrip('\r\n')
+    DD = d.get('DD').rstrip('\r\n')
+
+except FileNotFoundError:
+    ##테스트 하는 경우
+    day1 = "20230316"
+    YYYY = "2023"
+    MM = "03"
+    DD = "16"
+    pass
+
 today = datetime.datetime.now().strftime('%Y%m%d')
-YYYY = d.get('YYYY').rstrip('\r\n')
-MM = d.get('MM').rstrip('\r\n')
-DD = d.get('DD').rstrip('\r\n')
+
+#print(day1)
 
 if day1 <= today:
     print("예약 날짜("+today+")가 지났습니다. 프로그램을 종료 합니다.")
     sys.exit()
 
 
-#url = 'http://imjingakcamping.co.kr/resv/res_01_calendar.php?year='+YYYY+'&month='+MM+'&day='+DD+' '
-url = 'https://imjingakcamping.co.kr/resv/res_01.html?checkdate='+YYYY+'-'+MM+'-'+DD+' '
-headers = {'Referer': 'https://imjingakcamping.co.kr/resv/res_01.html?checkdate='+YYYY+'-'+MM+'-'+DD+''}
+#url = 'https://imjingakcamping.co.kr/resv/res_01_calendar.php?year='+YYYY+'&month='+MM+'&day='+DD+' '
+#headers = {'Referer': 'https://imjingakcamping.co.kr/resv/res_01.html?checkdate='+YYYY+'-'+MM+'-'+DD+''}
 
-print(url)
+url = 'https://imjingakcamping.co.kr/module/reserv21/res_01_calendar.php?year='+YYYY+'&month='+MM+'&day='+DD+' '
+headers = {'Referer': 'https://imjingakcamping.co.kr/module/reserv21/res_01.html?checkdate='+YYYY+'-'+MM+'-'+DD+''}
 
+
+#print(url)
 #print(headers)
 #http://imjingakcamping.co.kr/resv/res_01.html?checkdate=2021-05-13
 
@@ -55,7 +66,6 @@ val1 = res.text
 #print('string type: {}'.format(type(val1)))
 #print(val1.replace(':true,',':\'true\','))
 val2 = val1.replace(':true,',':\'true\',')
-print(val2)
 dict1 = literal_eval(val2)
 dict2 = dict1['result']
 ##딕셔너리 타입 안의 딕셔너리 형 데이터만 추출한다.
@@ -73,7 +83,6 @@ cam_paju_punghwa,host=paju-zone,sitelocation=zone평화 year=2020,month=05,day=0
 cam_paju_punghwa,host=paju-zone,sitelocation=Zone힐링 year=2020,month=05,day=01,vacancy=0
 cam_paju_punghwa,host=paju-zone,sitelocation=Zone누리 year=2020,month=05,day=01,vacancy=0
 cam_paju_punghwa,host=paju-zone,sitelocation=Zone애코 year=2020,month=05,day=01,vacancy=0
-
 
 '''
 cnt1 = 0

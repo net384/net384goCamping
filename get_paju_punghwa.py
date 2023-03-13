@@ -3,6 +3,8 @@
 Created on Mon Oct 19 14:12:06 2020
 
 @author: net384
+
+변경 날짜 : 23.3.13 코드 수정
 """
 
 import requests

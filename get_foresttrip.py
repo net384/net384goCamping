@@ -16,7 +16,7 @@ import sys
 d = {}
 ## with open("get_foresttrip.in") as f:
 ##with open("/root/script/get_foresttrip.in") as f:
-with open("get_foresttrip.in") as f:
+with open("/root/script/get_foresttrip.in") as f:
     for line in f:
         (key, val) = line.split('=')
         d[str(key)] = val
@@ -64,7 +64,7 @@ area = {
         '충북'			: {'_csrf': 'd7e59d7a-f836-45b7-a985-f56585ed3af1' , 'srchInsttArcd': 3},
         '전북'			: {'_csrf': 'd7e59d7a-f836-45b7-a985-f56585ed3af1' , 'srchInsttArcd': 5},
         '전남'			: {'_csrf': 'd7e59d7a-f836-45b7-a985-f56585ed3af1' , 'srchInsttArcd': 6},
-        '대구/경북'		: {'_csrf': 'd7e59d7a-f836-45b7-a985-f56585ed3af1' , 'srchInsttArcd': 7},
+        '대구/경북'		: {'_csrf': 'b40b2846-a44e-4b96-81b7-5bf8c9140501' , 'srchInsttArcd': 7},
         '부산/경남'		: {'_csrf': 'e122ef39-c336-4eca-b476-9f854f436683' , 'srchInsttArcd': 8},
         '제주'			: {'_csrf': 'a9f5b305-4658-4bf6-a516-e53d9409bc5c' , 'srchInsttArcd': 9},
         '대전/충남'		: {'_csrf': 'd7e59d7a-f836-45b7-a985-f56585ed3af1' , 'srchInsttArcd': 4},
@@ -191,5 +191,7 @@ for i,val in area.items():
             ',day='+day1[6:8]+',vacancy='+x.text.replace('예약가능 객실 수 : ',''))
     else : 
         print(response.status_code)
+    
+    time.sleep(2)
 
 

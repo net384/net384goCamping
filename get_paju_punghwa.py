@@ -33,10 +33,10 @@ try:
 
 except FileNotFoundError:
     ##테스트 하는 경우
-    day1 = "20230316"
+    day1 = "20230509"
     YYYY = "2023"
-    MM = "03"
-    DD = "16"
+    MM = "05"
+    DD = "09"
     pass
 
 today = datetime.datetime.now().strftime('%Y%m%d')

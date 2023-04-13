@@ -16,7 +16,7 @@ import sys
 d = {}
 ## with open("get_foresttrip.in") as f:
 ##with open("/root/script/get_foresttrip.in") as f:
-with open("get_foresttrip.in") as f:
+with open("/root/script/get_foresttrip.in") as f:
     for line in f:
         (key, val) = line.split('=')
         d[str(key)] = val

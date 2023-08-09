@@ -16,7 +16,7 @@ import sys
 d = {}
 ## with open("get_foresttrip.in") as f:
 ##with open("/root/script/get_foresttrip.in") as f:
-with open("/root/script/get_foresttrip.in") as f:
+with open("/root/script/get_foresttrip_v2.in") as f:
     for line in f:
         (key, val) = line.split('=')
         d[str(key)] = val
@@ -33,6 +33,12 @@ day2 = dayadd.strftime('%Y%m%d')
   
 ##날짜 조건절 체크 (오늘 보다 작으면 에러)    
 today = datetime.datetime.now().strftime('%Y%m%d')
+
+
+#캠프 타입 houseCampSctin : 01 휴양림, 02 야영
+CampTp = d.get('CMPTP')
+
+#print(CampTp)
 
 if day1 <= today:
     print("예약 날짜("+today+")가 지났습니다. 프로그램을 종료 합니다.")
@@ -133,7 +139,7 @@ for i,val in area.items():
         'srchSthngCnt': 1,
         'srchWord': '',
         'netfunnel_key': found,
-        'houseCampSctin': '02',
+        'houseCampSctin': CampTp,
         'rsrvtPssblYn': '',
         'rsrvtWtngSctin': '01',
         'srchHouseCharg': '',
@@ -161,10 +167,7 @@ for i,val in area.items():
     
     #print(response.status_code)​
     #print(response.url)
-    
     #print(response.text.find('예약'))
-    
-    
     #print(response.text)
     
     if response.status_code == 200:

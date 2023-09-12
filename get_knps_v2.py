@@ -89,10 +89,11 @@ res=requests.post(url,  headers=headers2)
 #res=requests.post(url, data=data, headers=headers2)
 #res.raise_for_status()
 
-resu1 = str(res.text)
+#resu1 = str(res.text)
 resu2 = res.json()
 
-print(resu1)
+#print(resu2)
 
-soup = bs(resu1, 'html.parser')
+print(resu2['campGroupList'])
+#soup = bs(resu1, 'html.parser')
 

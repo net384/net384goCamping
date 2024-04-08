@@ -56,13 +56,18 @@ class GetCampDay:
             d = {}
             with open(DAYFILE) as f:
                 for line in f:
+                    # 공백, '#', '\r', 또는 빈 라인은 무시합니다.
+                    if line.startswith(' ') or line.startswith('#')  or line.startswith('\r') or line.startswith('\r\n')  or line.strip() == '':
+                        continue                    
+                    
                     (key, val) = line.split('=')
                     d[str(key)] = val.rstrip('\r\n')
 
             self.day1 = d.get('YYYY')+d.get('MM')+d.get('DD')
             self.days = int(d.get('DAYS'))
+            self.CampType = d.get('CMPTP')
         except:
-            print('파일이 없거나 권한이 불충분 합니다. 파일명 : [' + DAYFILE+ ']')
+            print('파일이 없거나 권한이 불충분 합니다. 또는 파일에 #,빈공백 외 다른값이 존재합니다. 파일명 : [' + DAYFILE+ ']')
             print('프로그램을 종료 합니다.')
             sys.exit()
     

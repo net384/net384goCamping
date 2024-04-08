@@ -1,63 +1,42 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed May 12 10:09:21 2021
-
-@author: net384
-"""
 import requests 
 import re
 import time
 import datetime
 from bs4 import BeautifulSoup
 import sys
+import c_GetCampDay 
+import os
 
-#day1 = "20201024"
+gs = c_GetCampDay.GetCampDay()
+filename = os.path.split(sys.argv[0])[1].replace('.py','.in')
+
 ##날짜 입력으로 seq 값 확인\\\
-d = {}
-## with open("get_foresttrip.in") as f:
-##with open("/root/script/get_foresttrip.in") as f:
-with open("/root/script/get_foresttrip.in") as f:
-    for line in f:
-        (key, val) = line.split('=')
-        d[str(key)] = val
+hostname = gs.hostname
+DAYFILE = gs.CheckExecServer(gs.hostname,filename)
+COOK_FILE = gs.GetCookieDir(gs.hostname,filename)
+#print(filename)
 
+gs.ExecParserIn(DAYFILE)
+gs.GetLastDay()
 
-day1 = d.get('YYYY').rstrip('\r\n')+d.get('MM').rstrip('\r\n')+d.get('DD').rstrip('\r\n')
+#print(gs.day1)
+daycount = gs.days
+#해당월 마이막 일자 가져오기
+#print(gs.this_month_last)
 
-##박수에 따라서 끝날짜 계산하
-daycount = int(d.get('DAYS').rstrip('\r\n'))
-dayadd = datetime.datetime.strptime(day1,'%Y%m%d')  + datetime.timedelta(days=daycount)  
+##박수에 따라서 끝날짜 계산하기
+dayadd = datetime.datetime.strptime(gs.day1,'%Y%m%d')  + datetime.timedelta(days=daycount)  
 day2 = dayadd.strftime('%Y%m%d')
+day1 = gs.day1
+CampType = gs.CampType
 
-#print(day1)
-  
+#print(day1)  
 ##날짜 조건절 체크 (오늘 보다 작으면 에러)    
 today = datetime.datetime.now().strftime('%Y%m%d')
+#today = '20210815'
+   
+gs.CheckBookDay(gs.day1,today,DAYFILE)
 
-if day1 <= today:
-    print("예약 날짜("+today+")가 지났습니다. 프로그램을 종료 합니다.")
-    sys.exit()
-    
-    
-##기본 조회 매개변
-'''
-주요 매개변수 
-srchRsrvtBgDt : 체크인날짜
-srchRsrvtEdDt : 체크아웃 날짜
-houseCampSctin : 01 휴양림, 02 야영
-
-지역 :
-인천/경기 : _csrf: d7e59d7a-f836-45b7-a985-f56585ed3af1, srchInsttArcd: 1
-강원 : _csrf: d7e59d7a-f836-45b7-a985-f56585ed3af1 , srchInsttArcd: 2
-충북 : _csrf: d7e59d7a-f836-45b7-a985-f56585ed3af1 , srchInsttArcd: 3
-대전/충남 : _csrf: d7e59d7a-f836-45b7-a985-f56585ed3af1 , srchInsttArcd: 4
-전북 : _csrf: d7e59d7a-f836-45b7-a985-f56585ed3af1 , srchInsttArcd: 5
-전남 : _csrf: d7e59d7a-f836-45b7-a985-f56585ed3af1 , srchInsttArcd: 6
-대구/경북 : _csrf: d7e59d7a-f836-45b7-a985-f56585ed3af1 , srchInsttArcd: 7
-부산/경남 : _csrf: e122ef39-c336-4eca-b476-9f854f436683, srchInsttArcd: 8
-제주 : _csrf : a9f5b305-4658-4bf6-a516-e53d9409bc5c, srchInsttArcd : 9
-
-'''
 area = {
         '인천/경기'		: {'_csrf': 'd7e59d7a-f836-45b7-a985-f56585ed3af1' , 'srchInsttArcd': 1},
         '강원'			: {'_csrf': 'd7e59d7a-f836-45b7-a985-f56585ed3af1' , 'srchInsttArcd': 2},
@@ -77,41 +56,10 @@ for i,val in area.items():
     #time.sleep(2)
     
     location = i
-    '''
-    paramDict = {  '_csrf' : area[i]['_csrf'] ,
-                    'srchInsttArcd' : area[i]['srchInsttArcd'] ,
-                    'srchInsttId' :'',
-                    'srchRsrvtBgDt' : day1,
-                    'srchRsrvtEdDt' : day2,
-                    'srchStngNofpr' : 2,
-                    'srchSthngCnt' : 1,
-                    'srchWord' : '',
-                    'houseCampSctin' : '02',
-                    'rsrvtPssblYn' : '',
-                    'rsrvtWtngSctin' : '01',
-                    'srchHouseCharg' : '',
-                    'srchCampCharg' : '',
-                    'goodsClsscHouseCdArr' : '',
-                    'goodsClsscCampCdArr' : '',
-                    'srchInsttTpcd' : '',
-                    'cmdogYn' : 'N',
-                    'bbqYn' : 'N',
-                    'dsprsYn' : 'N',
-                    'otsdWeterYn' : 'N',
-                    'wifiYn' : 'N',
-                    'snowPlaceYn' : 'N',
-                    'srchMyLtd' : '',
-                    'srchMyLng' : '',
-                    'srchDstnc' : '',
-                    'gNowPage' : 1,
-                    'srchGoodsId' : '',
-                    'hmpgId' : 'FRIP',  
-                 } 
-    '''
-
+   
     #23.4.13 넷퍼넬 도입으로 인한 네퍼넬 키 요청 로직 추가
     nef_url = "https://nf.foresttrip.go.kr/ts.wseq?opcode=5101&nfid=0&prefix=NetFunnel.gRtype=5101;&sid=service_1&aid=action1&js=yes&1681360392254" 
-    response = requests.get(nef_url)
+    response = requests.get(nef_url, timeout=10)
     string = response.text
     #print(response.text)
 
@@ -133,9 +81,9 @@ for i,val in area.items():
         'srchSthngCnt': 1,
         'srchWord': '',
         'netfunnel_key': found,
-        'houseCampSctin': '01',
+        'houseCampSctin': CampType, ## 01: 휴양관 02: 야영장
         'rsrvtPssblYn': '',
-        'rsrvtWtngSctin': '01',
+        'rsrvtWtngSctin': '01', 
         'srchHouseCharg': '',
         'srchCampCharg': '',
         'goodsClsscHouseCdArr': '',
@@ -157,14 +105,11 @@ for i,val in area.items():
 
     url = "https://www.foresttrip.go.kr/rep/or/fcfsRsrvtRcrfrDtlDetls.do" 
     
-    response = requests.get(url, params=paramDict) 
+    response = requests.get(url, params=paramDict, timeout=10) 
     
     #print(response.status_code)​
     #print(response.url)
-    
     #print(response.text.find('예약'))
-    
-    
     #print(response.text)
     
     if response.status_code == 200:
@@ -192,6 +137,6 @@ for i,val in area.items():
     else : 
         print(response.status_code)
     
-    time.sleep(2)
+    #time.sleep(2)
 
 

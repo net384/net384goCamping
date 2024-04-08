@@ -1,3 +1,11 @@
+import c_GetCampDay 
+import requests
+import json
+import inspect
+
+print(inspect.getfile(requests))
+
+
 class MyClass:
     class_variable = 0  # 클래스 변수
 

@@ -14,9 +14,9 @@ import sys
 #day1 = "20201024"
 ##날짜 입력으로 seq 값 확인\\\
 d = {}
-## with open("get_foresttrip.in") as f:
+## with open("get_foresttrip.in") as f:get_foresttrip2.py
 ##with open("/root/script/get_foresttrip.in") as f:
-with open("/root/script/get_foresttrip_v2.in") as f:
+with open("/root/github/net384goCamping/get_foresttrip_v2.in") as f:
     for line in f:
         (key, val) = line.split('=')
         d[str(key)] = val

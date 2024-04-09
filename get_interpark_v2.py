@@ -82,8 +82,10 @@ for sitecode in dicv:
     #url = "http://ticket.interpark.com/Ticket/Goods/GoodsInfoJSON.asp?Flag=UseCheckIn&GoodsCode=20003580&PlaceCode=20000297&PlayDate="+day1+"&Callback=fnPlayDateChangeCallBack"
     url = "https://api-ticketfront.interpark.com/v1/goods/"+sitecode+"/playSeq?endDate="+day2+"&goodsCode="+sitecode+"&page=1&pageSize=1550&preSale=false&startDate="+day1+""
     #a = {"Num":"1","PlaySeq":"126","PlayDate":"20201101","SeatYN":"N","BalanceSeatYN":"N","CancelableDate":"202010312359","OnlineDate":"20201028","BookingEndDate":"202010312359","NoOfTime":"1","PlayDateDisc":"1박 2일","PlaySeqList":"126","StartPlaySeq":"126"}
+    
+    proxy_srv = '110.12.211.14'
     proxy = {
-    'http': 'http://115.89.203.59:80','https': 'http://115.89.203.59:80'
+    'http': 'http://'+proxy_srv+':80','https': 'http://'+proxy_srv+':80'
     #'https': 'https://username:password@proxy_server:proxy_port'
     }
     
@@ -92,8 +94,8 @@ for sitecode in dicv:
     
     print(url)
 
-    ##res = requests.get(url,headers=headers, proxies=proxy, verify=False)
-    res = requests.get(url,headers=headers, verify=False)
+    res = requests.get(url,headers=headers, proxies=proxy, verify=False)
+    #res = requests.get(url,headers=headers, verify=False)
     #print(response.status_code)
 
     print(res.text)

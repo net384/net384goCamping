@@ -92,21 +92,19 @@ for sitecode in dicv:
     
     print(url)
 
-    res = requests.get(url,headers=headers, proxies=proxy, verify=False)
+    ##res = requests.get(url,headers=headers, proxies=proxy, verify=False)
+    res = requests.get(url,headers=headers, verify=False)
     #print(response.status_code)
 
     print(res.text)
     
     
-    
-    
-
     a1 = res.text
     #replace_t1 = a1.replace("fnPlayDateChangeCallBack({\"JSON\":[", "[",1)
     #replace_t2 = replace_t1.replace("]});", "]",1)
     #print(replace_t2)
     #res.status_code
-'''
+
     #print(replace_t2)
     #print(json.loads(replace_t2))
 
@@ -145,4 +143,4 @@ for sitecode in dicv:
         print(''+sitecode,dicv[sitecode][1]+',host=noeul-zone,sitelocation='+str(i3.get("seatGradeName"))+' year='+day1[0:4]+',month='+day1[4:6]+ ',day='+day1[6:8]+',vacancy='+str(i3.get('remainCnt')))
 
     time.sleep(2)
-    '''
+    

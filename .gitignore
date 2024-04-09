@@ -2,3 +2,5 @@
 __pycache__/
 *.py[cod]
 
+# 날짜 설정 파일 제외
+get_*.in

@@ -92,13 +92,57 @@ for sitecode in dicv:
     
     print(url)
 
-    res = requests.get(url,headers=headers, proxies=proxy, verify=False)
+    ##res = requests.get(url,headers=headers, proxies=proxy, verify=False)
+    res = requests.get(url,headers=headers, verify=False)
     #print(response.status_code)
 
     print(res.text)
     
     
-    
+    a1 = res.text
+    #replace_t1 = a1.replace("fnPlayDateChangeCallBack({\"JSON\":[", "[",1)
+    #replace_t2 = replace_t1.replace("]});", "]",1)
+    #print(replace_t2)
+    #res.status_code
+
+    #print(replace_t2)
+    #print(json.loads(replace_t2))
+
+    #결과의json 을 dict로 저장 처리
+    sv1 = json.loads(a1)
+    #print(sv1.get('data'))
+    #sv2 = sv1.get('data')
+
+    #print(sv1.get("data"))
+
+
+    for i2 in sv1.get("data"):
+        #{'playSeq': '016', 'playDate': '20220419', 'playTime': '1400', 'bookableDate': '202203100000', 'bookingEndDate': '202204191800', 'cancelableDate': '202204191800', 'remainSeat': None, 'casting': None, 'limitMaxStayDate': None, 'playSeqList': [{'stayPlaySeq': '016', 'stayDay': '1박2일'}, {'stayPlaySeq': '016,017', 'stayDay': '2박3일'}]}
+        #print(i2.get('playDate') + ":" + i2.get('playSeq'))
+        if i2.get('playDate') == day1:
+            v_playseq = i2.get('playSeq')
+            
+    ## 2박 이라면 https://api-ticketfront.interpark.com/v1/goods/22002652/playSeq/PlaySeq/016,017/REMAINSEAT  사용 필요 
+    #https://api-ticketfront.interpark.com/v1/goods/22002652/playSeq/PlaySeq/016/REMAINSEAT
+    url2 = "https://api-ticketfront.interpark.com/v1/goods/"+sitecode+"/playSeq/PlaySeq/"+v_playseq+"/REMAINSEAT"
+    headers2 = {'Referer': 'https://tickets.interpark.com/' , 'pragma': 'no-cache'}
+
+    res2 = requests.get(url2,headers=headers2)
+    #print(res2.text)
+    a2 = res2.text
+
+    sv2 = json.loads(a2)
+
+    #print (sv2.get("data").get("remainSeat"))
+    ix = sv2.get("data").get("remainSeat")
+
+    for i3 in ix:
+        #{'playSeq': '016', 'playDate': '20220419', 'playTime': '1400', 'bookableDate': '202203100000', 'bookingEndDate': '202204191800', 'cancelableDate': '202204191800', 'remainSeat': None, 'casting': None, 'limitMaxStayDate': None, 'playSeqList': [{'stayPlaySeq': '016', 'stayDay': '1박2일'}, {'stayPlaySeq': '016,017', 'stayDay': '2박3일'}]}
+        #print(i3.get('seatGrade'),i3.get("seatGradeName")+"g"+str(i3.get("remainCnt")))
+        #cam_noeulcamp,host=noeul-zone,sitelocation=zone평화 year=2020,month=10,day=17,vacancy=0
+        print(''+sitecode,dicv[sitecode][1]+',host=noeul-zone,sitelocation='+str(i3.get("seatGradeName"))+' year='+day1[0:4]+',month='+day1[4:6]+ ',day='+day1[6:8]+',vacancy='+str(i3.get('remainCnt')))
+
+    time.sleep(2)
     
 
     a1 = res.text
